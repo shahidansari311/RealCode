@@ -5,6 +5,7 @@ import {YSocketIO} from 'y-socket.io/dist/server'
 import "dotenv/config"
 
 const app=express();
+app.use(express.static("public"))
 const httpServer=createServer(app);
 const PORT=process.env.PORT || 4000;
 
@@ -21,13 +22,13 @@ const ySocketIO=new YSocketIO(io);
 ySocketIO.initialize();
 
 
-// default route 
-app.get('/',(req,res)=>{
-    res.status(200).json({
-        message:"Hello World",
-        success:true
-    })
-})
+// // default route 
+// app.get('/',(req,res)=>{
+//     res.status(200).json({
+//         message:"Hello World",
+//         success:true
+//     })
+// })
 
 
 // Health check route 

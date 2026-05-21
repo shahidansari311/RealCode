@@ -9,7 +9,7 @@ const App = () => {
 
   const [username,SetUsername]=useState(()=>{
     return new URLSearchParams(window.location.search).get('username') || ""
-  }); // persist data while reloaad also
+  }); // persist data while reload also
   const editorRef=useRef(null);
 
   const [users,setUsers]=useState([]);
@@ -19,7 +19,6 @@ const App = () => {
   const ydoc=useMemo(()=>new Y.Doc(),[]);
   const yText=useMemo(()=>ydoc.getText("monaco"),[ydoc]);
 
-
   const handleMount=(editor)=>{
     editorRef.current=editor; 
     // Editor and yjs connection 
@@ -27,25 +26,21 @@ const App = () => {
         yText,
         editorRef.current.getModel(),
         new Set([editorRef.current]),
-        // provider.awareness //to check which user selected which part
+        // provider.awareness to check which user selected which part
       )
   }
-
 
   const handleJoin=(e)=>{
     e.preventDefault(); //To prevent from page reload
     SetUsername(e.target.username.value)
     window.history.pushState({},"","?username="+e.target.username.value); //get username detail in url
-
-    
-
   }
 
   useEffect(() => {
     if(username){
 
       // To connect and match text on backend 
-      const provider = new SocketIOProvider("http://localhost:3000/","monaco",ydoc,{
+      const provider = new SocketIOProvider("/","monaco",ydoc,{
         autoConnect:true
       });
 
@@ -64,12 +59,9 @@ const App = () => {
         provider.awareness.setLocalStateField("user",null);
       }
 
-
       window.addEventListener("beforeunload",handleBeforeUnload);
 
-
       return ()=>{
-        // monacobinding.destroy();
         provider.disconnect();
         window.removeEventListener('beforeunload',handleBeforeUnload)
       }
