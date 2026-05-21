@@ -2,6 +2,7 @@ import express from 'express'
 import {createServer} from 'http'
 import { Server } from 'socket.io'
 import {YSocketIO} from 'y-socket.io/dist/server'
+import "dotenv/config"
 
 const app=express();
 const httpServer=createServer(app);
@@ -38,6 +39,6 @@ app.get('/health',(req,res)=>{
 })
 
 // Server running status 
-httpServer.listen(prompt, ()=>{
+httpServer.listen(PORT, ()=>{
     console.log(`Server running on port ${PORT}`);
 })
